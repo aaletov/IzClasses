@@ -13,7 +13,7 @@ void printSpecTable(MyVector<Student>& students);
 void printTable(MyVector<Student>& students);
 void printBorder(std::ostream& in, const int len);
 void printEmptyString(std::ostream& in, const int* columns, const int nColumns, const int tableLen);
-void printFilledString(std::ostream& in, const int* columns, const MyVector<char*> columnsInfo, const int nColumns, const int tableLen);
+void printFilledString(std::ostream& in, const int* columns, const MyVector<char*>& columnsInfo, const int nColumns, const int tableLen);
 void reduceSpecs(MyVector<Student>& students, MyVector<char*>& specs);
 void strcpy(char* cstr, std::string str);
 
@@ -184,13 +184,13 @@ void printEmptyString(std::ostream& in, const int* columns, const int nColumns, 
     std::cout << std::endl;
 }
 
-void printFilledString(std::ostream& in, const int* columns, const MyVector<char*> columnsInfo, const int nColumns, const int tableLen)
+void printFilledString(std::ostream& in, const int* columns, const MyVector<char*>& columnsInfo, const int nColumns, const int tableLen)
 {
     std::cout << '-';
     for (int i = 0; i < nColumns; i++)
     {
         std::cout << std::setw(columns[i]);
-        std::cout << "I ate dad";
+        std::cout << columnsInfo;
         std::cout << '-';
     }
     std::cout << std::endl;
