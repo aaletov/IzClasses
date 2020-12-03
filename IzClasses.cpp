@@ -13,9 +13,9 @@ void printSpecTable(MyVector<Student>& students);
 void printTable(MyVector<Student>& students);
 void printBorder(std::ostream& in, const int len);
 void printEmptyString(std::ostream& in, const int* columns, const int nColumns, const int tableLen);
-void printFilledString(std::ostream& in, const int* columns, const MyVector<char*>& columnsInfo, const int nColumns, const int tableLen);
+void printFilledString(std::ostream& in, const int* columns, MyVector<char*>& columnsInfo, const int nColumns, const int tableLen);
 void reduceSpecs(MyVector<Student>& students, MyVector<char*>& specs);
-void strcpy(char* cstr, std::string str);
+void strToCString(std::string& in, char* out);
 
 class FileException
 {
@@ -161,7 +161,18 @@ void printTable(MyVector<Student>& students)
 
     printBorder(std::cout, tableLen);
     printEmptyString(std::cout, columns, nColumns, tableLen);
-    printFilledString(std::cout, columns, specs, nColumns, tableLen);
+
+    std::string testSpec = "Специальность";
+    std::string testCode = "Код";
+    MyVector<char*> columnInfo;
+    char* cTestSpec = new char[testSpec.length() + 1];
+    char* cTestCode = new char[testCode.length() + 1];
+    strToCString(testSpec, cTestSpec);
+    strToCString(testCode, cTestCode);
+    columnInfo.push_back(cTestCode);
+    columnInfo.push_back(cTestSpec);
+
+    printFilledString(std::cout, columns, columnInfo, nColumns, tableLen);
 }
 
 void printBorder(std::ostream& in, const int len)
@@ -184,13 +195,29 @@ void printEmptyString(std::ostream& in, const int* columns, const int nColumns, 
     std::cout << std::endl;
 }
 
-void printFilledString(std::ostream& in, const int* columns, const MyVector<char*>& columnsInfo, const int nColumns, const int tableLen)
+void printFilledString(std::ostream& in, const int* columns, MyVector<char*>& columnsInfo, const int nColumns, const int tableLen)
 {
     std::cout << '-';
+    int emptySpace = 0;
+    int emptySpace1 = 0;
+    int emptySpace2 = 0;
+    int infoLen = 0;
     for (int i = 0; i < nColumns; i++)
     {
-        std::cout << std::setw(columns[i]);
-        std::cout << columnsInfo;
+        infoLen = strlen(columnsInfo[i]);
+        emptySpace = columns[i] - infoLen;
+        emptySpace1 = emptySpace - emptySpace / 2;
+        if (emptySpace % 2 == 0)
+        {
+            emptySpace2 = emptySpace1;
+        }
+        else
+        {
+            emptySpace2 = emptySpace - emptySpace1;
+        }
+        std::cout << std::setw(infoLen + emptySpace1);
+        std::cout << columnsInfo[i];
+        std::cout << std::setw(emptySpace2 + 1);
         std::cout << '-';
     }
     std::cout << std::endl;
@@ -202,7 +229,7 @@ void reduceSpecs(MyVector<Student>& students, MyVector<char*>& specs)
     {
         std::string spec = students[i].getSpecialty();
         char* cstr = new char[spec.length() + 1];
-        strcpy(cstr, spec.c_str());
+        strToCString(spec, cstr);
         if (specs.contains(cstr))
         {
             continue;
@@ -214,11 +241,12 @@ void reduceSpecs(MyVector<Student>& students, MyVector<char*>& specs)
     }
 }
 
-void strcpy(char* cstr, std::string str)
+void strToCString(std::string& in, char* out)
 {
-    str = "";
-    for (int i = 0; i < strlen(cstr); i++)
+    int i;
+    for (i = 0; i < in.length(); i++)
     {
-        str[i] = cstr[i];
+        out[i] = in[i];
     }
+    out[i] = 0;
 }

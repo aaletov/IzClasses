@@ -1,9 +1,3 @@
 ﻿  IzClasses.cpp
-C:\Users\yabad\source\repos\Homework\IzClasses\IzClasses.cpp(193,35): error C2678: бинарный "[": не найден оператор, принимающий левый операнд типа "const MyVector<char *>" (или приемлемое преобразование отсутствует)
-C:\Users\yabad\source\repos\Homework\IzClasses\MyVector.h(35,5): message : может быть "T &MyVector<T>::operator [](int)"
-          with
-          [
-              T=char *
-          ]
-C:\Users\yabad\source\repos\Homework\IzClasses\IzClasses.cpp(193,35): message : при попытке сопоставить список аргументов "(const MyVector<char *>, int)"
-C:\Users\yabad\source\repos\Homework\IzClasses\IzClasses.cpp(220,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\yabad\source\repos\Homework\IzClasses\IzClasses.cpp(247,19): warning C4018: <: несоответствие типов со знаком и без знака
+  IzClasses.vcxproj -> C:\Users\yabad\source\repos\Homework\Debug\IzClasses.exe
