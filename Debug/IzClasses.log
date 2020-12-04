@@ -1,3 +1,6 @@
 ﻿  IzClasses.cpp
-C:\Users\yabad\source\repos\Homework\IzClasses\IzClasses.cpp(247,19): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\yabad\source\repos\Homework\IzClasses\IzClasses.cpp(310,19): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\yabad\source\repos\Homework\IzClasses\IzClasses.cpp(383,71): warning C4244: +=: преобразование "double" в "int", возможна потеря данных
+C:\Users\yabad\source\repos\Homework\IzClasses\IzClasses.cpp(304): warning C4715: reduceSpecs: значение возвращается не при всех путях выполнения
+C:\Users\yabad\source\repos\Homework\IzClasses\IzClasses.cpp(374): warning C4715: digToCStr: значение возвращается не при всех путях выполнения
   IzClasses.vcxproj -> C:\Users\yabad\source\repos\Homework\Debug\IzClasses.exe

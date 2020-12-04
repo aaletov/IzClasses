@@ -10,12 +10,18 @@ Student openNewStudent(const std::string& PATH);
 void getStringBeforeSpace(std::ifstream& in, std::string& str);
 int getIntBeforeSpace(std::ifstream& in);
 void printSpecTable(MyVector<Student>& students);
-void printTable(MyVector<Student>& students);
+void printTable(char** headers, char*** values, int nColumns, int nStrings);
 void printBorder(std::ostream& in, const int len);
 void printEmptyString(std::ostream& in, const int* columns, const int nColumns, const int tableLen);
-void printFilledString(std::ostream& in, const int* columns, MyVector<char*>& columnsInfo, const int nColumns, const int tableLen);
-void reduceSpecs(MyVector<Student>& students, MyVector<char*>& specs);
+void printFilledString(std::ostream& in, const int* columns, MyVector<char*>& columnsInfo, const int tableLen);
+void printTableHeader(std::ostream& in, const int* columns, MyVector<char*>& columnsInfo, const int tableLen);
+char*** reduceSpecs(MyVector<Student>& students);
 void strToCString(std::string& in, char* out);
+char* codeFromNumber(char* groupNumber);
+char* intToCStr(int x);
+int cStrToInt(char* cstr);
+int intLen(int number);
+char digToCStr(int x);
 
 class FileException
 {
@@ -49,6 +55,8 @@ int main()
 {
     setlocale(LC_ALL, "RUS");
     const std::string PATH = "students.txt";
+    const int lenCodeColumns[] = { 31, 61 };
+    const int nCodeColumns = 2;
     // Пункт 3
     MyVector<Student> students;
 
@@ -63,10 +71,64 @@ int main()
         std::cout << students[i] << std::endl;
     }
     // Пункт 6
-    printTable(students);
+    char*** specsCodes = reduceSpecs(students);
+
+    int nOfStrings = cStrToInt(specsCodes[0][0]);
+    specsCodes++;
+    for (int i = 0; i < nOfStrings; i++)
+    {
+        std::cout << "Code: " << specsCodes[i][0] << std::endl;
+        std::cout << "Spec: " << specsCodes[i][1] << std::endl;
+    }
+
+
+    std::string codeHeaderString = "Код";
+    std::string specHeaderString = "Специальность";
+    char* codeHeader = new char[codeHeaderString.length() + 1]; 
+    char* specHeader = new char[specHeaderString.length() + 1]; 
+    strToCString(codeHeaderString, codeHeader);
+    strToCString(specHeaderString, specHeader);
+    char** headers = new char* [nCodeColumns];
+    headers[0] = codeHeader;
+    headers[1] = specHeader;
+
+    //printTable(headers, values);
 
     return 0;
 }
+
+void printTable(char** headers, char*** values, int nColumns, int nStrings, int* lenColumns)
+{
+    const int codeColumnLen = 31;
+    const int specColumnLen = 61;
+    const int columns[] = { codeColumnLen, specColumnLen };
+   /* const int nColumns = sizeof(columns) / sizeof(columns[0]);*/
+    const int tableLen = codeColumnLen + specColumnLen + nColumns + 1;
+
+
+
+    /*printTableHeader(in, columns, )*/
+
+
+}
+
+//void printTableHeader(std::ostream& in, const int* columns, const int tableLen)
+//{
+//    printBorder(std::cout, tableLen);
+//    printEmptyString(std::cout, columns, columnsInfo.getArrayLen(), tableLen);
+//
+//    std::string testSpec = "Специальность";
+//    std::string testCode = "Код";
+//    MyVector<char*> columnInfo;
+//    char* cTestSpec = new char[testSpec.length() + 1];
+//    char* cTestCode = new char[testCode.length() + 1];
+//    strToCString(testSpec, cTestSpec);
+//    strToCString(testCode, cTestCode);
+//    columnInfo.push_back(cTestCode);
+//    columnInfo.push_back(cTestSpec);
+//
+//    printFilledString(std::cout, columns, columnInfo, tableLen);
+//}
 
 void openAllStudents(const std::string& PATH, MyVector<Student>& myVector)
 {
@@ -148,33 +210,6 @@ int getIntBeforeSpace(std::ifstream& in)
     return n;
 }
 
-void printTable(MyVector<Student>& students)
-{
-    const int codeColumnLen = 31;
-    const int specColumnLen = 61;
-    const int columns[] = { codeColumnLen, specColumnLen };
-    const int nColumns = sizeof(columns) / sizeof(columns[0]);
-    const int tableLen = codeColumnLen + specColumnLen + nColumns + 1;
-
-    MyVector<char*> specs;
-    reduceSpecs(students, specs);
-
-    printBorder(std::cout, tableLen);
-    printEmptyString(std::cout, columns, nColumns, tableLen);
-
-    std::string testSpec = "Специальность";
-    std::string testCode = "Код";
-    MyVector<char*> columnInfo;
-    char* cTestSpec = new char[testSpec.length() + 1];
-    char* cTestCode = new char[testCode.length() + 1];
-    strToCString(testSpec, cTestSpec);
-    strToCString(testCode, cTestCode);
-    columnInfo.push_back(cTestCode);
-    columnInfo.push_back(cTestSpec);
-
-    printFilledString(std::cout, columns, columnInfo, nColumns, tableLen);
-}
-
 void printBorder(std::ostream& in, const int len)
 {
     for (int i = 0; i < len; i++)
@@ -195,13 +230,14 @@ void printEmptyString(std::ostream& in, const int* columns, const int nColumns, 
     std::cout << std::endl;
 }
 
-void printFilledString(std::ostream& in, const int* columns, MyVector<char*>& columnsInfo, const int nColumns, const int tableLen)
+void printFilledString(std::ostream& in, const int* columns, MyVector<char*>& columnsInfo, const int tableLen)
 {
     std::cout << '-';
     int emptySpace = 0;
     int emptySpace1 = 0;
     int emptySpace2 = 0;
     int infoLen = 0;
+    int nColumns = columnsInfo.getArrayLen();
     for (int i = 0; i < nColumns; i++)
     {
         infoLen = strlen(columnsInfo[i]);
@@ -223,30 +259,139 @@ void printFilledString(std::ostream& in, const int* columns, MyVector<char*>& co
     std::cout << std::endl;
 }
 
-void reduceSpecs(MyVector<Student>& students, MyVector<char*>& specs)
+char*** reduceSpecs(MyVector<Student>& students)
 {
+    MyVector<char**> specs;
+    char** stringNOfStrings = new char* [2];
+    char* nOfStrings = new char[1000];
+    specs.push_back(stringNOfStrings);
+
+    char* codeTemp;
+    char* cspec;
+    char** tempString = new char* [2];
+    bool isCodeIn;
+
     for (int i = 0; i < students.getArrayLen(); i++)
     {
         std::string spec = students[i].getSpecialty();
-        char* cstr = new char[spec.length() + 1];
-        strToCString(spec, cstr);
-        if (specs.contains(cstr))
+        cspec = new char[spec.length() + 1];
+        strToCString(spec, cspec);
+        strToCString(students[i].getGroupNumber(), tempString[0]);
+        codeTemp = codeFromNumber(tempString[0]);
+        tempString[1] = cspec;
+
+        isCodeIn = false;
+        for (int j = 0; j < specs.getArrayLen(); j++)
+        {
+            if (specs[j][0] == tempString[0])
+            {
+                isCodeIn = true; 
+                break;
+            }
+        }
+
+        if (isCodeIn)
         {
             continue;
         }
         else
         {
-            specs.push_back(cstr);
+            specs.push_back(tempString);
         }
+        nOfStrings = intToCStr(specs.getArrayLen());
+        return specs.toDynamic();
     }
 }
 
 void strToCString(std::string& in, char* out)
 {
     int i;
+    out = new char[in.length() + 1];
     for (i = 0; i < in.length(); i++)
     {
         out[i] = in[i];
     }
     out[i] = 0;
+}
+
+char* codeFromNumber(char* groupNumber)
+{
+    int pos = sizeof(strstr(groupNumber, "/") - groupNumber);
+    char* newString = new char[pos + 1];
+    newString[pos] = 0;
+
+    for (int i = 0; i < pos; i++)
+    {
+        newString[i] = groupNumber[i];
+    }
+    newString[pos] = 0;
+    return newString;
+}
+
+char* intToCStr(int x)
+{
+    int len = intLen(x);
+    char* cInt = new char[len + 1];
+    cInt[len] = 0;
+    int dig;
+
+    for (int i = 0; i < len; i++)
+    {
+        dig = x % 10;
+        cInt[len - 1 - i] = static_cast<char>(digToCStr(dig));
+        x /= 10;
+    }
+    return cInt;
+}
+
+char digToCStr(int x)
+{
+    switch (x)
+    {
+    case 0:
+        return 48;
+    case 1:
+        return 49;
+    case 2:
+        return 50;
+    case 3:
+        return 51;
+    case 4:
+        return 52;
+    case 5:
+        return 53;
+    case 6:
+        return 54;
+    case 7:
+        return 55;
+    case 8:
+        return 56;
+    case 9:
+        return 57;
+    default:
+        break;
+    }
+}
+
+int cStrToInt(char* cstr)
+{
+    int sum = 0;
+    int len = strlen(cstr);
+
+    for (int i = 0; i < len; i++)
+    {
+        sum += (static_cast<int>(cstr[i]) - 48) * pow(10, len - 1 - i);
+    }
+    return sum;
+}
+
+int intLen(int number)
+{
+    int size = 1;
+    while (number / 10 != 0)
+    {
+        number /= 10;
+        size++;
+    }
+    return size;
 }

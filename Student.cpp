@@ -140,3 +140,8 @@ std::string& Student::getSpecialty()
 {
 	return specialty;
 }
+
+std::string& Student::getGroupNumber()
+{
+	return groupNumber;
+}

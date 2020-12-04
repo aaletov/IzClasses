@@ -16,6 +16,7 @@ public:
 	~Student();
 	int getSumPerformance();
 	std::string& getSpecialty();
+	std::string& getGroupNumber();
 	Student operator+(const int right);
 	friend Student operator-(Student& student, int right);
 	bool operator>(Student& student2);
