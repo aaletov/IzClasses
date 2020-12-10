@@ -145,3 +145,8 @@ std::string& Student::getGroupNumber()
 {
 	return groupNumber;
 }
+
+std::string& Student::getName()
+{
+	return lastNameInitials;
+}

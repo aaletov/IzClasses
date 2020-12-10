@@ -58,10 +58,6 @@ public:
 			array = newArray;
 		}
 	}
-	T* toDynamic()
-	{
-		return array;
-	}
 };
 
 #include "MyVector.cpp"
