@@ -11,7 +11,7 @@ TableRow::TableRow(char** info, int nColumns, int* columnsLen)
 	this->info = new char* [nColumns];
 	for (int i = 0; i < nColumns; i++)
 	{
-		this->info[i] = new char[strlen(info[i])];
+		this->info[i] = new char[strlen(info[i]) + 1];
 		strcpy(this->info[i], info[i]);
 	}
 
@@ -80,4 +80,29 @@ void TableRow::printEmptyCellString(std::ostream& out, int column)
 {
 	out << std::setw(columnsLen[column] + 1);
 	out << '-';
+}
+
+TableRow::~TableRow()
+{
+	delete[] columnsLen;
+	for (int i = 0; i < nColumns; i++)
+	{
+		delete[] info[i];
+	}
+	delete[] info;
+}
+
+TableRow& TableRow::operator=(TableRow& rvalue)
+{
+	info = new char* [nColumns];
+
+	for (int i = 0; i < nColumns; i++)
+	{
+		info[i] = new char[strlen(rvalue.info[i]) + 1];
+		for (int j = 0; j < strlen(rvalue.info[i]) + 1; j++)
+		{
+			info[i][j] = rvalue.info[i][j];
+		}
+	}
+	return *this;
 }

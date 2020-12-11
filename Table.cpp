@@ -43,3 +43,11 @@ void Table::printBorder(std::ostream& out)
 
 	out << std::endl;
 }
+
+Table::~Table() {
+	for (int i = 0; i < nRows; i++)
+	{
+		tableRows[i].~TableRow();
+	}
+	delete[] tableRows;
+}

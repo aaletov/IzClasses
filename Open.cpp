@@ -34,7 +34,8 @@ void openAllStudents(const std::string& PATH, MyVector<Student>& myVector)
         int i = 0;
         while (true)
         {
-            myVector.push_back(openNewStudent(PATH));
+            Student temp = openNewStudent(PATH);
+            myVector.push_back(temp);
             i++;
         }
     }

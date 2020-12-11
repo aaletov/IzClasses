@@ -1,7 +1,7 @@
-﻿  IzClasses.cpp
-C:\Users\yabad\source\repos\Homework\IzClasses\Utils.h(13,19): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\yabad\source\repos\Homework\IzClasses\Utils.h(72,71): warning C4244: +=: преобразование "double" в "int", возможна потеря данных
-C:\Users\yabad\source\repos\Homework\IzClasses\Utils.h(63): warning C4715: digToCStr: значение возвращается не при всех путях выполнения
-C:\Users\yabad\source\repos\Homework\IzClasses\IzClasses.cpp(109): warning C4715: reduceSpecs: значение возвращается не при всех путях выполнения
-C:\Users\yabad\source\repos\Homework\IzClasses\IzClasses.cpp(107): warning C4172: возвращение адреса локальной или временной переменной : specs
-  IzClasses.vcxproj -> C:\Users\yabad\source\repos\Homework\Debug\IzClasses.exe
+﻿  Table.cpp
+D:\py3eg\IzClasses\Table.cpp(7,57): error C2679: бинарный "=": не найден оператор, принимающий правый операнд типа "TableRow" (или приемлемое преобразование отсутствует)
+D:\py3eg\IzClasses\TableRow.h(16,12): message : может быть "TableRow &TableRow::operator =(TableRow &)"
+D:\py3eg\IzClasses\Table.cpp(7,57): message : при попытке сопоставить список аргументов "(TableRow, TableRow)"
+D:\py3eg\IzClasses\Table.cpp(12,63): error C2679: бинарный "=": не найден оператор, принимающий правый операнд типа "TableRow" (или приемлемое преобразование отсутствует)
+D:\py3eg\IzClasses\TableRow.h(16,12): message : может быть "TableRow &TableRow::operator =(TableRow &)"
+D:\py3eg\IzClasses\Table.cpp(12,63): message : при попытке сопоставить список аргументов "(TableRow, TableRow)"

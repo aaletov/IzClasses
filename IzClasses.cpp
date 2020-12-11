@@ -7,9 +7,96 @@
 #include "Utils.h"
 #include "Table.h"
 #include "Open.h"
+#include "Exceptions.h"
 
-MyVector<char**>& reduceSpecs(MyVector<Student>& students);
-void codeFromNumber(char* groupNumber, char* code);
+void reduceSpecs(MyVector<Student>& students, MyVector<MyVector<MyVector<char>>>& specsCodes);
+std::string codeFromNumber(std::string& groupNumber);
+
+template<typename T>
+void vectorToArray(MyVector<T> inVector, T* array)
+{
+    try
+    {
+        for (int i = 0; i < inVector.getArrayLen(); i++)
+        {
+            array[i] = inVector;
+        }
+    }
+    catch (std::exception&)
+    {
+        throw MemException();
+    }
+    
+}
+
+template<typename T>
+void copyDynamic(T* in, T* out)
+{
+    std::is_pointer<T>(in);
+}
+
+//int main()
+//{
+//    int* lengths = new int[2];
+//    lengths[0] = 1;
+//    lengths[1] = 1;
+//
+//    MyVector<MyVector<MyVector<int>>> test;
+//
+//    int testValue = 5;
+//    MyVector<int> testRow;
+//    for (int i = 0; i < 5; i++)
+//    {
+//        testRow.push_back(i);
+//    }
+//
+//    MyVector<MyVector<int>> testMatrix;
+//
+//    for (int i = 0; i < 5; i++)
+//    {
+//        MyVector<int> testRow;
+//        for (int j = 0; j < 5; j++)
+//        {
+//            int temp = i * 10 + j;
+//            testRow.push_back(temp);
+//        }
+//
+//        testMatrix.push_back(testRow);
+//    }
+//
+//    std::cout << testValue << std::endl;
+//
+//    for (int i = 0; i < testRow.getArrayLen(); i++)
+//    {
+//        std::cout << testRow[i] << std::endl;
+//    }
+//
+//    for (int i = 0; i < testMatrix.getArrayLen(); i++)
+//    {
+//        for (int j = 0; j < testMatrix[i].getArrayLen(); j++)
+//        {
+//            std::cout << testMatrix[i][j] << ' ';
+//        }
+//        std::cout << std::endl;
+//    }
+//
+//    int** testDyn = new int*[testMatrix.getArrayLen()];
+//
+//    for (int i = 0; i < testMatrix.getArrayLen(); i++)
+//    {
+//        testDyn[i] = new int[testMatrix[i].getArrayLen()];
+//        testDyn[i] = testMatrix[i].getDynamic();
+//    }
+//
+//    for (int i = 0; i < testMatrix.getArrayLen(); i++)
+//    {
+//        for (int j = 0; j < testMatrix[i].getArrayLen(); j++)
+//        {
+//            std::cout << testDyn[i][j] << ' ';
+//        }
+//        std::cout << std::endl;
+//    }
+//}
 
 int main()
 {
@@ -17,13 +104,19 @@ int main()
     const std::string PATH = "students.txt";
     const int lenCodeColumns[] = { 31, 61 };
     const int nCodeColumns = 2;
+
     // Пункт 3
+
     MyVector<Student> students;
 
     openAllStudents(PATH, students);
+
     // Пункт 5
+
     sort(students, students.getArrayLen());
+
     // Пункт 4
+
     std::cout << "Лучший студент:" << std::endl << students[students.getArrayLen() - 1] << std::endl << std::endl;
     std::cout << "Отсортированный список:" << std::endl << std::endl;
     for (int i = 0; i < students.getArrayLen(); i++)
@@ -31,18 +124,23 @@ int main()
         std::cout << students[i] << std::endl;
     }
 
-
     // Пункт 6
-    MyVector<char**>& specsCodes = reduceSpecs(students);
 
-    int nOfStrings = cStrToInt(specsCodes[0][0]);
-    
-    for (int i = 0; i < nOfStrings; i++)
+    MyVector<MyVector<MyVector<char>>> specsCodes;
+    reduceSpecs(students, specsCodes);
+
+    for (int i = 0; i < specsCodes.getArrayLen(); i++)
     {
-        std::cout << "Code: " << specsCodes[i][0] << std::endl;
-        std::cout << "Spec: " << specsCodes[i][1] << std::endl;
+        for (int j = 0; j < specsCodes[i].getArrayLen(); j++)
+        {
+            for (int u = 0; u < specsCodes[i][j].getArrayLen(); u++)
+            {
+                std::cout << specsCodes[i][j][u];
+            }
+            std::cout << ' ';
+        }
+        std::cout << std::endl;
     }
-
 
     std::string codeHeaderString = "Код";
     std::string specHeaderString = "Специальность";
@@ -54,69 +152,67 @@ int main()
     headers[0] = codeHeader;
     headers[1] = specHeader;
 
+    char*** info = new char** [specsCodes.getArrayLen()];
+    for (int i = 0; i < specsCodes.getArrayLen(); i++)
+    {
+        info[i] = new char* [specsCodes[i].getArrayLen()];
+        for (int j = 0; j < specsCodes[i].getArrayLen(); j++)
+        {
+            info[i][j] = new char[specsCodes[i][j].getArrayLen() + 1];
+            info[i][j] = specsCodes[i][j].getDynamic();
+            info[i][j][specsCodes[i][j].getArrayLen()] = 0;
+        }
+    }
+
+    int* columnsLen = new int[2];
+    columnsLen[0] = 50;
+    columnsLen[1] = 50;
+
+    Table codes(headers, info, 2, columnsLen, specsCodes.getArrayLen());
+    codes.printTable(std::cout);
+
     return 0;
 }
 
-MyVector<char**>& reduceSpecs(MyVector<Student>& students)
+void reduceSpecs(MyVector<Student>& students, MyVector<MyVector<MyVector<char>>>& specsCodes)
 {
-    MyVector<char**> specs;
-
-    char** stringNOfStrings = new char* [2];
-    char* nOfStrings = new char[1000];
-    specs.push_back(stringNOfStrings);
-
-    char* tempCode;
-    int tempLength;
-    std::string buf;
-    char** tempString = new char* [2];
-    bool isCodeIn;
+    bool isCodeIn = false;
 
     for (int i = 0; i < students.getArrayLen(); i++)
     {
-        buf = students[i].getGroupNumber();
-        tempLength = buf.length();
-        tempCode = new char[tempLength];
-        tempString[0] = new char[tempLength];
-        strToCString(buf, tempCode);
-        codeFromNumber(tempCode, tempString[0]);
-
-        buf = students[i].getSpecialty();
-        tempLength = buf.length();
-        tempString[1] = new char[tempLength];
-        strToCString(buf, tempString[1]);
-
-        isCodeIn = false;
-        for (int j = 0; j < specs.getArrayLen(); j++)
+        MyVector<MyVector<char>> toFind(2);
+        std::string& tempSpec = students[i].getSpecialty();
+        std::string& tempNumber = students[i].getGroupNumber();
+        std::string tempCode = codeFromNumber(tempNumber);
+        
+        for (int j = 0; j < tempSpec.length(); j++)
         {
-            if (specs[j][0] == tempString[0])
-            {
-                isCodeIn = true; 
-                break;
-            }
+            toFind[0].push_back(tempSpec[j]);
         }
 
+        
+
+        for (int j = 0; j < tempCode.length(); j++)
+        {
+            toFind[1].push_back(tempCode[j]);
+        }
+
+        isCodeIn = specsCodes.contains(toFind);
+        
         if (isCodeIn)
         {
             continue;
         }
         else
         {
-            specs.push_back(tempString);
+            specsCodes.push_back(toFind);
         }
-        nOfStrings = intToCStr(specs.getArrayLen());
-        return specs;
     }
 }
 
-void codeFromNumber(char* groupNumber, char* code)
+std::string codeFromNumber(std::string& groupNumber)
 {
-    int pos = sizeof(strstr(groupNumber, "/") - groupNumber) / sizeof(groupNumber[0]);
-
-    std::cout << pos << std::endl;
-
-    for (int i = 0; i < pos; i++)
-    {
-        code[i] = groupNumber[i];
-    }
-    code[pos] = 0;
+    int pos = groupNumber.find('/');
+    std::string code = groupNumber.substr(0, pos);
+    return code;
 }

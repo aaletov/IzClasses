@@ -12,5 +12,6 @@ private:
 public:
 	Table(char** headers, char*** info, int nColumns, int* columnsLen, int nRows);
 	void printTable(std::ostream& out);
+	~Table();
 };
 

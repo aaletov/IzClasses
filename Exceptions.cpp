@@ -17,3 +17,12 @@ const char* StrException::getError()
 {
     return s_error.c_str();
 }
+
+MemException::MemException()
+{
+}
+
+const char* MemException::getError()
+{
+    return s_error.c_str();
+}
