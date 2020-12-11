@@ -127,7 +127,7 @@ int main()
 
     // Пункт 5
     
-    /*int nStudColumns = 5;
+    int nStudColumns = 5;
     std::string field1 = "Имя";
     std::string field2 = "Специальность";
     std::string field3 = "Группа";
@@ -207,7 +207,7 @@ int main()
     columnsStudLen[1] = 30;
 
     Table studTable(studHeaders, studInfo, 5, columnsStudLen, students.getArrayLen());
-    studTable.printTable(std::cout);*/
+    studTable.printTable(std::cout);
     
     // Пункт 6
 

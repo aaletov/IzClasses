@@ -11,6 +11,7 @@ private:
 	int* performance;
 public:
 	Student();
+	int getSemester();
 	Student(const std::string& i_lastNameInitials, const std::string& i_specialty, const std::string& i_groupNumber, const int i_semester, int* const i_performance);
 	Student(const Student& student);
 	~Student();

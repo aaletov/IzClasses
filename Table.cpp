@@ -4,12 +4,14 @@
 Table::Table(char** headers, char*** info, int nColumns, int* columnsLen, int nRows)
 {
 	this->nRows = nRows;
-	this->headers = TableRow(headers, nColumns, columnsLen);
+	TableRow tempRow(headers, nColumns, columnsLen);
+	this->headers = tempRow;
 	this->tableRows = new TableRow[nRows];
 
 	for (int i = 0; i < nRows; i++)
 	{
-		this->tableRows[i] = TableRow(info[i], nColumns, columnsLen);
+		TableRow tempRow(info[i], nColumns, columnsLen);
+		this->tableRows[i] = tempRow;
 	}
 
 	for (int i = 0; i < nColumns; i++)
@@ -36,7 +38,7 @@ void Table::printTable(std::ostream& out)
 
 void Table::printBorder(std::ostream& out)
 {
-	for (int i = 0; i < tableLen + 1; i++)
+	for (int i = 0; i < tableLen; i++)
 	{
 		out << '-';
 	}
@@ -45,9 +47,9 @@ void Table::printBorder(std::ostream& out)
 }
 
 Table::~Table() {
-	for (int i = 0; i < nRows; i++)
+	/*for (int i = 0; i < nRows; i++)
 	{
 		tableRows[i].~TableRow();
-	}
+	}*/
 	delete[] tableRows;
 }

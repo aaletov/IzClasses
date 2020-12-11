@@ -1,7 +1,2 @@
 ﻿  Table.cpp
-D:\py3eg\IzClasses\Table.cpp(7,57): error C2679: бинарный "=": не найден оператор, принимающий правый операнд типа "TableRow" (или приемлемое преобразование отсутствует)
-D:\py3eg\IzClasses\TableRow.h(16,12): message : может быть "TableRow &TableRow::operator =(TableRow &)"
-D:\py3eg\IzClasses\Table.cpp(7,57): message : при попытке сопоставить список аргументов "(TableRow, TableRow)"
-D:\py3eg\IzClasses\Table.cpp(12,63): error C2679: бинарный "=": не найден оператор, принимающий правый операнд типа "TableRow" (или приемлемое преобразование отсутствует)
-D:\py3eg\IzClasses\TableRow.h(16,12): message : может быть "TableRow &TableRow::operator =(TableRow &)"
-D:\py3eg\IzClasses\Table.cpp(12,63): message : при попытке сопоставить список аргументов "(TableRow, TableRow)"
+  IzClasses.vcxproj -> D:\py3eg\IzClasses\Debug\IzClasses.exe

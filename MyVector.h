@@ -41,7 +41,17 @@ public:
 	}
 	~MyVector()
 	{
-		delete[] array;
+		try
+		{
+			for (int i = 0; i < arrayLen; i++)
+			{
+				array[i].~T();
+			}
+		}
+		catch (const std::exception&)
+		{
+			delete[] array;
+		}
 	}
 	bool operator==(MyVector<T>& rvalue)
 	{
@@ -96,6 +106,10 @@ public:
 	}
 	T& operator[](int i)
 	{
+		if (i > arrayLen)
+		{
+			throw - 1;
+		}
 		return *(array + i);
 	}
 	void push_back(T& elem)

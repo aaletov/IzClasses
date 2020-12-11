@@ -8,6 +8,11 @@ Student::Student()
 	performance = new int[5];
 }
 
+int Student::getSemester()
+{
+	return semester;
+}
+
 Student::Student(const std::string& i_lastNameInitials, const std::string& i_specialty, const std::string& i_groupNumber, const int i_semester, int* const i_performance)
 {
 	lastNameInitials = i_lastNameInitials;

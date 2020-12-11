@@ -14,6 +14,7 @@ public:
 	~TableRow();
 	TableRow();
 	TableRow(char** info, int nColumns, int* columnsLen);
+	TableRow(const TableRow& drob);
 	void printRow(std::ostream& out);
 };
 

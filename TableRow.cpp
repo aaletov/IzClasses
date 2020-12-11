@@ -4,6 +4,9 @@
 
 TableRow::TableRow()
 {
+	info = new char*[1];
+	nColumns = 1;
+	columnsLen = new int[1];
 }
 
 TableRow::TableRow(char** info, int nColumns, int* columnsLen)
@@ -21,6 +24,28 @@ TableRow::TableRow(char** info, int nColumns, int* columnsLen)
 	for (int i = 0; i < nColumns; i++)
 	{
 		this->columnsLen[i] = columnsLen[i];
+	}
+}
+
+TableRow::TableRow(const TableRow& rvalue)
+{
+	this->nColumns = rvalue.nColumns;
+
+	this->columnsLen = new int[nColumns];
+	for (int i = 0; i < rvalue.nColumns; i++)
+	{
+		this->columnsLen[i] = rvalue.columnsLen[i];
+	}
+
+	info = new char* [rvalue.nColumns];
+
+	for (int i = 0; i < rvalue.nColumns; i++)
+	{
+		info[i] = new char[strlen(rvalue.info[i]) + 1];
+		for (int j = 0; j < strlen(rvalue.info[i]) + 1; j++)
+		{
+			info[i][j] = rvalue.info[i][j];
+		}
 	}
 }
 
@@ -94,9 +119,16 @@ TableRow::~TableRow()
 
 TableRow& TableRow::operator=(TableRow& rvalue)
 {
-	info = new char* [nColumns];
+	info = new char* [rvalue.nColumns];
+	nColumns = rvalue.nColumns;
+	columnsLen = new int[rvalue.nColumns];
 
 	for (int i = 0; i < nColumns; i++)
+	{
+		columnsLen[i] = rvalue.columnsLen[i];
+	}
+
+	for (int i = 0; i < rvalue.nColumns; i++)
 	{
 		info[i] = new char[strlen(rvalue.info[i]) + 1];
 		for (int j = 0; j < strlen(rvalue.info[i]) + 1; j++)
