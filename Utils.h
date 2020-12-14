@@ -6,8 +6,19 @@ int cStrToInt(char* cstr);
 int intLen(int number);
 char digToCStr(int x);
 void strToCString(std::string& in, char* out);
+void strToCString(const std::string& in, char* out);
 
 void strToCString(std::string& in, char* out)
+{
+    int i;
+    for (i = 0; i < in.length(); i++)
+    {
+        out[i] = in[i];
+    }
+    out[i] = 0;
+}
+
+void strToCString(const std::string& in, char* out)
 {
     int i;
     for (i = 0; i < in.length(); i++)
@@ -58,7 +69,7 @@ char digToCStr(int x)
     case 9:
         return 57;
     default:
-        break;
+        throw - 1;
     }
 }
 

@@ -37,65 +37,16 @@ void copyDynamic(T* in, T* out)
 
 //int main()
 //{
-//    int* lengths = new int[2];
-//    lengths[0] = 1;
-//    lengths[1] = 1;
+//    std::string ree = "ree";
 //
-//    MyVector<MyVector<MyVector<int>>> test;
+//    char** cRee = new char*[2];
+//    cRee[0] = new char[ree.length() + 1];
 //
-//    int testValue = 5;
-//    MyVector<int> testRow;
-//    for (int i = 0; i < 5; i++)
-//    {
-//        testRow.push_back(i);
-//    }
+//    strToCString(ree, cRee[0]);
+//    ree = "eeR";
+//    std::cout << cRee[0];
 //
-//    MyVector<MyVector<int>> testMatrix;
-//
-//    for (int i = 0; i < 5; i++)
-//    {
-//        MyVector<int> testRow;
-//        for (int j = 0; j < 5; j++)
-//        {
-//            int temp = i * 10 + j;
-//            testRow.push_back(temp);
-//        }
-//
-//        testMatrix.push_back(testRow);
-//    }
-//
-//    std::cout << testValue << std::endl;
-//
-//    for (int i = 0; i < testRow.getArrayLen(); i++)
-//    {
-//        std::cout << testRow[i] << std::endl;
-//    }
-//
-//    for (int i = 0; i < testMatrix.getArrayLen(); i++)
-//    {
-//        for (int j = 0; j < testMatrix[i].getArrayLen(); j++)
-//        {
-//            std::cout << testMatrix[i][j] << ' ';
-//        }
-//        std::cout << std::endl;
-//    }
-//
-//    int** testDyn = new int*[testMatrix.getArrayLen()];
-//
-//    for (int i = 0; i < testMatrix.getArrayLen(); i++)
-//    {
-//        testDyn[i] = new int[testMatrix[i].getArrayLen()];
-//        testDyn[i] = testMatrix[i].getDynamic();
-//    }
-//
-//    for (int i = 0; i < testMatrix.getArrayLen(); i++)
-//    {
-//        for (int j = 0; j < testMatrix[i].getArrayLen(); j++)
-//        {
-//            std::cout << testDyn[i][j] << ' ';
-//        }
-//        std::cout << std::endl;
-//    }
+//    return 0;
 //}
 
 int main()
@@ -127,76 +78,45 @@ int main()
 
     // Пункт 5
     
-    /*int nStudColumns = 5;
-    std::string field1 = "Имя";
-    std::string field2 = "Специальность";
-    std::string field3 = "Группа";
-    std::string field4 = "Семестр";
-    std::string field5 = "Успеваемость";
+    int nStudColumns = 5;
+
+    const std::string fields[] = { "Имя", "Специальность", "Группа", "Семестр", "Успеваемость" };
 
     char** studHeaders = new char* [nStudColumns];
 
-    char* header1 = new char[field1.length() + 1];
-    char* header2 = new char[field2.length() + 1];
-    char* header3 = new char[field3.length() + 1];
-    char* header4 = new char[field4.length() + 1];
-    char* header5 = new char[field5.length() + 1];
-    strToCString(field1, header1);
-    strToCString(field2, header2);
-    strToCString(field3, header3);
-    strToCString(field4, header4);
-    strToCString(field5, header5);
-    
-    studHeaders[0] = header1;
-    studHeaders[1] = header2;
-    studHeaders[2] = header3;
-    studHeaders[3] = header4;
-    studHeaders[4] = header5;
+    for (int i = 0; i < nStudColumns; i++)
+    {
+        studHeaders[i] = new char[fields[0].length() + 1];
+        strToCString(fields[i], studHeaders[i]);
+    }
 
     char*** studInfo = new char** [students.getArrayLen()];
+    std::string& tempStudString = students[0].getName();
+    int tempStudInt;
 
     for (int i = 0; i < students.getArrayLen(); i++)
     {
         studInfo[i] = new char* [nStudColumns];
+
+        tempStudString = students[i].getName();
+        studInfo[i][0] = new char [tempStudString.length() + 1];
+        strToCString(tempStudString, studInfo[i][0]);
         
-        studInfo[i][0] = new char[students[i].getName().length() + 1];
-        for (int j = 0; j < students[i].getName().length(); j++)
-        {
-            studInfo[i][0][j] = students[i].getName()[j];
-        }
-        studInfo[i][0][students[i].getName().length()] = 0;
+        tempStudString = students[i].getSpecialty();
+        studInfo[i][1] = new char[tempStudString.length() + 1];
+        strToCString(tempStudString, studInfo[i][1]);
 
-        studInfo[i][1] = new char[students[i].getSpecialty().length() + 1];
-        for (int j = 0; j < students[i].getSpecialty().length(); j++)
-        {
-            studInfo[i][1][j] = students[i].getSpecialty()[j];
-        }
-        studInfo[i][1][students[i].getSpecialty().length()] = 0;
+        tempStudString = students[i].getGroupNumber();
+        studInfo[i][2] = new char[tempStudString.length() + 1];
+        strToCString(tempStudString, studInfo[i][2]);
 
-        studInfo[i][2] = new char[students[i].getGroupNumber().length() + 1];
-        for (int j = 0; j < students[i].getGroupNumber().length(); j++)
-        {
-            studInfo[i][2][j] = students[i].getGroupNumber()[j];
-        }
-        studInfo[i][2][students[i].getGroupNumber().length()] = 0;
+        tempStudInt = students[i].getSemester();
+        studInfo[i][3] = new char[intLen(tempStudInt) + 1];
+        strcpy(studInfo[i][3], intToCStr(tempStudInt));
 
-        studInfo[i][3] = new char[strlen(intToCStr(students[i].getSemester())) + 1];
-        for (int j = 0; j < strlen(intToCStr(students[i].getSemester())); j++)
-        {
-            int tempSemester = students[i].getSemester();
-            char* tempCStr = new char[intLen(tempSemester) + 1];
-            strcpy(studInfo[i][3], tempCStr);
-        }
-        studInfo[i][3][strlen(intToCStr(students[i].getSemester()))] = 0;
-
-        studInfo[i][4] = new char[strlen(intToCStr(students[i].getSumPerformance())) + 1];
-        for (int j = 0; j < strlen(intToCStr(students[i].getSumPerformance())); j++)
-        {
-            int tempPerformance = students[i].getSumPerformance();
-            char* tempCStr = new char[intLen(tempPerformance) + 1];
-            strcpy(studInfo[i][4], tempCStr);
-        }
-        studInfo[i][4][strlen(intToCStr(students[i].getSumPerformance()))] = 0;
+        tempStudInt = students[i].getSumPerformance();
+        studInfo[i][4] = new char[intLen(tempStudInt) + 1];
+        strcpy(studInfo[i][4], intToCStr(tempStudInt));
     }
 
     int* columnsStudLen = new int[5];
@@ -207,25 +127,12 @@ int main()
     columnsStudLen[1] = 30;
 
     Table studTable(studHeaders, studInfo, 5, columnsStudLen, students.getArrayLen());
-    studTable.printTable(std::cout);*/
+    studTable.printTable(std::cout);
     
     // Пункт 6
 
     MyVector<MyVector<MyVector<char>>> specsCodes;
     reduceSpecs(students, specsCodes);
-
-    for (int i = 0; i < specsCodes.getArrayLen(); i++)
-    {
-        for (int j = 0; j < specsCodes[i].getArrayLen(); j++)
-        {
-            for (int u = 0; u < specsCodes[i][j].getArrayLen(); u++)
-            {
-                std::cout << specsCodes[i][j][u];
-            }
-            std::cout << ' ';
-        }
-        std::cout << std::endl;
-    }
 
     std::string codeHeaderString = "Специальность";
     std::string specHeaderString = "Код";
