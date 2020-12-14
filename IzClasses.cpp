@@ -18,6 +18,7 @@ void formHeadersRow(const std::string fields[], char**& headers, int nColumns);
 int main()
 {
     setlocale(LC_ALL, "RUS");
+    std::cout << "Введите название файла" << std::endl;
     std::string PATH;
     std::cin >> PATH;
     const std::string OUT_PATH = "out.txt";
@@ -35,17 +36,6 @@ int main()
     // Пункт 5
 
     sort(students, students.getArrayLen());
-
-    // Пункт 4
-
-    std::cout << "Лучший студент:" << std::endl << students[students.getArrayLen() - 1] << std::endl << std::endl;
-    std::cout << "Отсортированный список:" << std::endl << std::endl;
-    for (int i = 0; i < students.getArrayLen(); i++)
-    {
-        std::cout << students[i] << std::endl;
-    }
-
-    // Пункт 5
     
     int nStudColumns = 5;
 
@@ -73,9 +63,9 @@ int main()
     getSpecsSet(students, specsCodes);
 
     const int nColumns = 2;
-    std::string strHeaders[] = { "Код", "Специальность" };
+    std::string strHeaders[] = { "Специальность", "Код" };
     char** headers;
-    formHeadersRow(fields, headers, nColumns);
+    formHeadersRow(strHeaders, headers, nColumns);
     
     char*** info;
     specsToMatrix(specsCodes, info);
@@ -86,6 +76,7 @@ int main()
 
     Table codes(headers, info, nColumns, columnsLen, specsCodes.getArrayLen());
     codes.printTable(out);
+    out.close();
 
     return 0;
 }
