@@ -5,10 +5,10 @@ char* intToCStr(int x);
 int cStrToInt(char* cstr);
 int intLen(int number);
 char digToCStr(int x);
-void strToCString(std::string& in, char* out);
+void strToCString(std::string& in, char*& out);
 void strToCString(const std::string& in, char* out);
 
-void strToCString(std::string& in, char* out)
+void strToCString(std::string& in, char*& out)
 {
     int i;
     for (i = 0; i < in.length(); i++)

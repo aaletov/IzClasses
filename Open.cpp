@@ -29,30 +29,37 @@ int getIntBeforeSpace(std::ifstream& in)
 
 void openAllStudents(const std::string& PATH, MyVector<Student>& myVector)
 {
+    std::ifstream in;
+    in.open(PATH, std::ios::in);
+    if (in.fail())
+    {
+        throw FileException();
+    }
     try
     {
         int i = 0;
         while (true)
         {
-            Student temp = openNewStudent(PATH);
+            Student temp = openNewStudent(in);
             myVector.push_back(temp);
             i++;
         }
     }
     catch (StrException& err)
     {
+        in.close();
         std::cout << err.getError() << std::endl << std::endl;
     }
     catch (FileException& err)
     {
+        in.close();
         std::cout << err.getError() << std::endl << std::endl;
     }
 }
 
-Student openNewStudent(const std::string& PATH)
+Student openNewStudent(std::ifstream& in)
 {
     static int alreadyRead = 0;
-    static std::ifstream in;
     std::string str = "";
     std::string lastName;
     std::string initials1;
@@ -61,15 +68,6 @@ Student openNewStudent(const std::string& PATH)
     std::string groupNumber;
     int semester;
     int* performance = new int[5];
-
-    if (alreadyRead == 0)
-    {
-        in.open(PATH, std::ios::in);
-        if (in.fail())
-        {
-            throw FileException();
-        }
-    }
 
     getStringBeforeSpace(in, lastName);
     getStringBeforeSpace(in, initials1);

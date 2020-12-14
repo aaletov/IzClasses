@@ -1,7 +1,4 @@
-﻿  IzClasses.cpp
-D:\py3eg\IzClasses\Utils.h(14,19): warning C4018: <: несоответствие типов со знаком и без знака
-D:\py3eg\IzClasses\Utils.h(24,19): warning C4018: <: несоответствие типов со знаком и без знака
-D:\py3eg\IzClasses\Utils.h(83,71): warning C4244: +=: преобразование "double" в "int", возможна потеря данных
-D:\py3eg\IzClasses\IzClasses.cpp(180,27): warning C4018: <: несоответствие типов со знаком и без знака
-D:\py3eg\IzClasses\IzClasses.cpp(187,27): warning C4018: <: несоответствие типов со знаком и без знака
+﻿  TableRow.cpp
+D:\py3eg\IzClasses\TableRow.cpp(45,21): warning C4018: <: несоответствие типов со знаком и без знака
+D:\py3eg\IzClasses\TableRow.cpp(134,21): warning C4018: <: несоответствие типов со знаком и без знака
   IzClasses.vcxproj -> D:\py3eg\IzClasses\Debug\IzClasses.exe

@@ -51,25 +51,25 @@ TableRow::TableRow(const TableRow& rvalue)
 
 void TableRow::printRow(std::ostream& out)
 {
+	out << '-';
 	for (int i = 0; i < nColumns; i++)
 	{
-		out << '-';
 		printEmptyCellString(out, i);
 	}
 
 	out << std::endl;
 
+	out << '-';
 	for (int i = 0; i < nColumns; i++)
 	{
-		out << '-';
 		printCellString(out, i);
 	}
 
 	out << std::endl;
 
+	out << '-';
 	for (int i = 0; i < nColumns; i++)
 	{
-		out << '-';
 		printEmptyCellString(out, i);
 	}
 

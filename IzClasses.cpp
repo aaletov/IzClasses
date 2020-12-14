@@ -9,51 +9,20 @@
 #include "Open.h"
 #include "Exceptions.h"
 
-void reduceSpecs(MyVector<Student>& students, MyVector<MyVector<MyVector<char>>>& specsCodes);
+void getSpecsSet(MyVector<Student>& students, MyVector<MyVector<MyVector<char>>>& specsCodes);
+void specsToMatrix(MyVector<MyVector<MyVector<char>>>& specsCodes, char***& info);
 std::string codeFromNumber(std::string& groupNumber);
-
-template<typename T>
-void vectorToArray(MyVector<T> inVector, T* array)
-{
-    try
-    {
-        for (int i = 0; i < inVector.getArrayLen(); i++)
-        {
-            array[i] = inVector;
-        }
-    }
-    catch (std::exception&)
-    {
-        throw MemException();
-    }
-    
-}
-
-template<typename T>
-void copyDynamic(T* in, T* out)
-{
-    std::is_pointer<T>(in);
-}
-
-//int main()
-//{
-//    std::string ree = "ree";
-//
-//    char** cRee = new char*[2];
-//    cRee[0] = new char[ree.length() + 1];
-//
-//    strToCString(ree, cRee[0]);
-//    ree = "eeR";
-//    std::cout << cRee[0];
-//
-//    return 0;
-//}
+void studentsToMatrix(MyVector<Student>& students, char***& studInfo);
+void formHeadersRow(const std::string fields[], char**& headers, int nColumns);
 
 int main()
 {
     setlocale(LC_ALL, "RUS");
-    const std::string PATH = "students.txt";
+    std::string PATH;
+    std::cin >> PATH;
     const std::string OUT_PATH = "out.txt";
+    std::ofstream out;
+    out.open(OUT_PATH, std::ios::out);
     const int lenCodeColumns[] = { 31, 61 };
     const int nCodeColumns = 2;
 
@@ -80,17 +49,76 @@ int main()
     
     int nStudColumns = 5;
 
-    const std::string fields[] = { "Имя", "Специальность", "Группа", "Семестр", "Успеваемость" };
+    std::string fields[] = { "Имя", "Специальность", "Группа", "Семестр", "Успеваемость" };
 
-    char** studHeaders = new char* [nStudColumns];
+    char** studHeaders = nullptr;
+    formHeadersRow(fields, studHeaders, nStudColumns);
 
-    for (int i = 0; i < nStudColumns; i++)
+    char*** studInfo = nullptr;
+    studentsToMatrix(students, studInfo);
+
+    int* columnsStudLen = new int[5];
+    for (int i = 0; i < 5; i++)
     {
-        studHeaders[i] = new char[fields[0].length() + 1];
-        strToCString(fields[i], studHeaders[i]);
+        columnsStudLen[i] = 20;
     }
+    columnsStudLen[1] = 30;
 
-    char*** studInfo = new char** [students.getArrayLen()];
+    Table studTable(studHeaders, studInfo, 5, columnsStudLen, students.getArrayLen());
+    studTable.printTable(out);
+
+    // Пункт 6
+
+    MyVector<MyVector<MyVector<char>>> specsCodes;
+    getSpecsSet(students, specsCodes);
+
+    const int nColumns = 2;
+    std::string strHeaders[] = { "Код", "Специальность" };
+    char** headers;
+    formHeadersRow(fields, headers, nColumns);
+    
+    char*** info;
+    specsToMatrix(specsCodes, info);
+
+    int* columnsLen = new int[nColumns];
+    columnsLen[0] = 50;
+    columnsLen[1] = 50;
+
+    Table codes(headers, info, nColumns, columnsLen, specsCodes.getArrayLen());
+    codes.printTable(out);
+
+    return 0;
+}
+
+void specsToMatrix(MyVector<MyVector<MyVector<char>>>& specsCodes, char***& info)
+{
+    info = new char** [specsCodes.getArrayLen()];
+    for (int i = 0; i < specsCodes.getArrayLen(); i++)
+    {
+        info[i] = new char* [specsCodes[i].getArrayLen()];
+        for (int j = 0; j < specsCodes[i].getArrayLen(); j++)
+        {
+            info[i][j] = new char[specsCodes[i][j].getArrayLen() + 1];
+            info[i][j] = specsCodes[i][j].getDynamic();
+            info[i][j][specsCodes[i][j].getArrayLen()] = 0;
+        }
+    }
+}
+
+void formHeadersRow(const std::string fields[], char**& headers, int nColumns)
+{
+    headers = new char*[nColumns];
+    for (int i = 0; i < nColumns; i++)
+    {
+        headers[i] = new char[fields[0].length() + 1];
+        strToCString(fields[i], headers[i]);
+    }
+}
+
+void studentsToMatrix(MyVector<Student>& students, char***& studInfo)
+{
+    const int nStudColumns = 5;
+    studInfo = new char** [students.getArrayLen()];
     std::string& tempStudString = students[0].getName();
     int tempStudInt;
 
@@ -99,9 +127,9 @@ int main()
         studInfo[i] = new char* [nStudColumns];
 
         tempStudString = students[i].getName();
-        studInfo[i][0] = new char [tempStudString.length() + 1];
+        studInfo[i][0] = new char[tempStudString.length() + 1];
         strToCString(tempStudString, studInfo[i][0]);
-        
+
         tempStudString = students[i].getSpecialty();
         studInfo[i][1] = new char[tempStudString.length() + 1];
         strToCString(tempStudString, studInfo[i][1]);
@@ -118,55 +146,9 @@ int main()
         studInfo[i][4] = new char[intLen(tempStudInt) + 1];
         strcpy(studInfo[i][4], intToCStr(tempStudInt));
     }
-
-    int* columnsStudLen = new int[5];
-    for (int i = 0; i < 5; i++)
-    {
-        columnsStudLen[i] = 20;
-    }
-    columnsStudLen[1] = 30;
-
-    Table studTable(studHeaders, studInfo, 5, columnsStudLen, students.getArrayLen());
-    studTable.printTable(std::cout);
-    
-    // Пункт 6
-
-    MyVector<MyVector<MyVector<char>>> specsCodes;
-    reduceSpecs(students, specsCodes);
-
-    std::string codeHeaderString = "Специальность";
-    std::string specHeaderString = "Код";
-    char* codeHeader = new char[codeHeaderString.length() + 1]; 
-    char* specHeader = new char[specHeaderString.length() + 1]; 
-    strToCString(codeHeaderString, codeHeader);
-    strToCString(specHeaderString, specHeader);
-    char** headers = new char* [nCodeColumns];
-    headers[0] = codeHeader;
-    headers[1] = specHeader;
-
-    char*** info = new char** [specsCodes.getArrayLen()];
-    for (int i = 0; i < specsCodes.getArrayLen(); i++)
-    {
-        info[i] = new char* [specsCodes[i].getArrayLen()];
-        for (int j = 0; j < specsCodes[i].getArrayLen(); j++)
-        {
-            info[i][j] = new char[specsCodes[i][j].getArrayLen() + 1];
-            info[i][j] = specsCodes[i][j].getDynamic();
-            info[i][j][specsCodes[i][j].getArrayLen()] = 0;
-        }
-    }
-
-    int* columnsLen = new int[2];
-    columnsLen[0] = 50;
-    columnsLen[1] = 50;
-
-    Table codes(headers, info, 2, columnsLen, specsCodes.getArrayLen());
-    codes.printTable(std::cout);
-
-    return 0;
 }
 
-void reduceSpecs(MyVector<Student>& students, MyVector<MyVector<MyVector<char>>>& specsCodes)
+void getSpecsSet(MyVector<Student>& students, MyVector<MyVector<MyVector<char>>>& specsCodes)
 {
     bool isCodeIn = false;
 
