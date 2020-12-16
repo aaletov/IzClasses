@@ -18,11 +18,11 @@ const char* StrException::getError()
     return s_error.c_str();
 }
 
-MemException::MemException()
+StudentException::StudentException()
 {
 }
 
-const char* MemException::getError()
+const char* StudentException::getError()
 {
     return s_error.c_str();
 }

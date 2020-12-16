@@ -30,13 +30,13 @@ int getIntBeforeSpace(std::ifstream& in)
 void openAllStudents(const std::string& PATH, MyVector<Student>& myVector)
 {
     std::ifstream in;
-    in.open(PATH, std::ios::in);
-    if (in.fail())
-    {
-        throw FileException();
-    }
     try
     {
+        in.open(PATH, std::ios::in);
+        if (in.fail())
+        {
+            throw FileException();
+        }
         int i = 0;
         while (true)
         {
@@ -51,6 +51,11 @@ void openAllStudents(const std::string& PATH, MyVector<Student>& myVector)
         std::cout << err.getError() << std::endl << std::endl;
     }
     catch (FileException& err)
+    {
+        in.close();
+        std::cout << err.getError() << std::endl << std::endl;
+    }
+    catch (StudentException& err)
     {
         in.close();
         std::cout << err.getError() << std::endl << std::endl;

@@ -2,8 +2,6 @@
 D:\py3eg\IzClasses\Utils.h(14,19): warning C4018: <: несоответствие типов со знаком и без знака
 D:\py3eg\IzClasses\Utils.h(24,19): warning C4018: <: несоответствие типов со знаком и без знака
 D:\py3eg\IzClasses\Utils.h(83,71): warning C4244: +=: преобразование "double" в "int", возможна потеря данных
-D:\py3eg\IzClasses\IzClasses.cpp(153,27): warning C4018: <: несоответствие типов со знаком и без знака
-D:\py3eg\IzClasses\IzClasses.cpp(160,27): warning C4018: <: несоответствие типов со знаком и без знака
-  Open.cpp
-  Создание кода...
+D:\py3eg\IzClasses\IzClasses.cpp(178,27): warning C4018: <: несоответствие типов со знаком и без знака
+D:\py3eg\IzClasses\IzClasses.cpp(185,27): warning C4018: <: несоответствие типов со знаком и без знака
   IzClasses.vcxproj -> D:\py3eg\IzClasses\Debug\IzClasses.exe

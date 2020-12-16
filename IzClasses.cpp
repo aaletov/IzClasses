@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <Windows.h>
 #include "Student.h"
 #include "MyVector.h"
 #include "InsertSort.h"
@@ -8,19 +9,39 @@
 #include "Table.h"
 #include "Open.h"
 #include "Exceptions.h"
+#include "Check.h"
 
 void getSpecsSet(MyVector<Student>& students, MyVector<MyVector<MyVector<char>>>& specsCodes);
 void specsToMatrix(MyVector<MyVector<MyVector<char>>>& specsCodes, char***& info);
 std::string codeFromNumber(std::string& groupNumber);
 void studentsToMatrix(MyVector<Student>& students, char***& studInfo);
 void formHeadersRow(const std::string fields[], char**& headers, int nColumns);
+void test();
 
 int main()
 {
-    setlocale(LC_ALL, "RUS");
-    std::cout << "Введите название файла" << std::endl;
+    setlocale(LC_ALL, "Russian");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+
+    for (int i = 0; i < 1000; i++)
+    {
+        test();
+    }
+
+    return 0;
+}
+
+void test()
+{
+    std::cout << "Введите в файл информацию о студентах в формате" << std::endl
+        << "Фамилия И. О. Специальность Номер группы Семестр Успеваемость" << std::endl
+        << "Пример:" << std::endl
+        << "Сидоров А. А. Менеджмент 12345/1312 5 7 6 7 6 7" << std::endl
+        << "И введите название файла" << std::endl;
     std::string PATH;
-    std::cin >> PATH;
+    //std::cin >> PATH;
+    PATH = "students.txt";
     const std::string OUT_PATH = "out.txt";
     std::ofstream out;
     out.open(OUT_PATH, std::ios::out);
@@ -32,6 +53,12 @@ int main()
     MyVector<Student> students;
 
     openAllStudents(PATH, students);
+
+    if (students.getArrayLen() == 0)
+    {
+        std::cout << "Не введено ни одного студента" << std::endl;
+        return;
+    }
 
     // Пункт 5
 
@@ -77,8 +104,6 @@ int main()
     Table codes(headers, info, nColumns, columnsLen, specsCodes.getArrayLen());
     codes.printTable(out);
     out.close();
-
-    return 0;
 }
 
 void specsToMatrix(MyVector<MyVector<MyVector<char>>>& specsCodes, char***& info)

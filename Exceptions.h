@@ -13,17 +13,17 @@ public:
 class StrException
 {
 private:
-    const std::string s_error = "Считаны все строки";
+    const std::string s_error = "Считаны все строки или встречена некорректная строка";
 public:
     StrException();
     const char* getError();
 };
 
-class MemException
+class StudentException
 {
 private:
-    const std::string s_error = "Ошибка выделения памяти";
+    const std::string s_error = "Некорректные входные данные";
 public:
-    MemException();
+    StudentException();
     const char* getError();
 };

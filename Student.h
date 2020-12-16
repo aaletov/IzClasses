@@ -11,7 +11,6 @@ private:
 	int* performance;
 public:
 	Student();
-	int getSemester();
 	Student(const std::string& i_lastNameInitials, const std::string& i_specialty, const std::string& i_groupNumber, const int i_semester, int* const i_performance);
 	Student(const Student& student);
 	~Student();
@@ -19,6 +18,8 @@ public:
 	std::string& getSpecialty();
 	std::string& getGroupNumber();
 	std::string& getName();
+	int getSemester();
+	void setPerformance(int i, int value);
 	Student operator+(const int right);
 	friend Student operator-(Student& student, int right);
 	bool operator>(Student& student2);

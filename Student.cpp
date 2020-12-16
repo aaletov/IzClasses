@@ -1,6 +1,8 @@
 #include <string>
 #include <iostream>
 #include "Student.h"
+#include "Exceptions.h"
+#include "Check.h"
 
 Student::Student() 
 {
@@ -15,6 +17,10 @@ int Student::getSemester()
 
 Student::Student(const std::string& i_lastNameInitials, const std::string& i_specialty, const std::string& i_groupNumber, const int i_semester, int* const i_performance)
 {
+	if (!(isLastNameInitials(i_lastNameInitials) && isCorrectSpecialty(i_specialty) && isCorrectNumber(i_groupNumber) && i_semester >= 1 && i_semester <= 8))
+	{
+		throw StudentException();
+	}
 	lastNameInitials = i_lastNameInitials;
 	specialty = i_specialty;
 	groupNumber = i_groupNumber;
@@ -22,6 +28,10 @@ Student::Student(const std::string& i_lastNameInitials, const std::string& i_spe
 	performance = new int[5];
 	for (int i = 0; i < 5; i++)
 	{
+		if (i_performance[i] < 0 || i_performance[i] > 10)
+		{
+			throw StudentException();
+		}
 		performance[i] = i_performance[i];
 	}
 }
@@ -154,4 +164,16 @@ std::string& Student::getGroupNumber()
 std::string& Student::getName()
 {
 	return lastNameInitials;
+}
+
+void Student::setPerformance(int i, int value)
+{
+	if (value > -1 && value < 11)
+	{
+		performance[i] = value;
+	}
+	else
+	{
+		throw "Некорректное значение";
+	}
 }

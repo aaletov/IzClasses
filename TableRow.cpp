@@ -109,12 +109,15 @@ void TableRow::printEmptyCellString(std::ostream& out, int column)
 
 TableRow::~TableRow()
 {
-	delete[] columnsLen;
-	for (int i = 0; i < nColumns; i++)
+	if (columnsLen != nullptr && info != nullptr && info[nColumns - 1] != nullptr)
 	{
-		delete[] info[i];
+		delete[] columnsLen;
+		for (int i = 0; i < nColumns; i++)
+		{
+			delete[] info[i];
+		}
+		delete[] info;
 	}
-	delete[] info;
 }
 
 TableRow& TableRow::operator=(TableRow& rvalue)

@@ -143,11 +143,13 @@
     <ClCompile Include="IzClasses.cpp" />
     <ClCompile Include="MyVector.cpp" />
     <ClCompile Include="Open.cpp" />
+    <ClCompile Include="Check.cpp" />
     <ClCompile Include="Student.cpp" />
     <ClCompile Include="Table.cpp" />
     <ClCompile Include="TableRow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Check.h" />
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="InsertSort.h" />
     <ClInclude Include="Open.h" />
