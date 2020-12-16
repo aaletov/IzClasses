@@ -23,25 +23,13 @@ int main()
     setlocale(LC_ALL, "Russian");
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-
-    for (int i = 0; i < 1000; i++)
-    {
-        test();
-    }
-
-    return 0;
-}
-
-void test()
-{
     std::cout << "Введите в файл информацию о студентах в формате" << std::endl
         << "Фамилия И. О. Специальность Номер группы Семестр Успеваемость" << std::endl
         << "Пример:" << std::endl
         << "Сидоров А. А. Менеджмент 12345/1312 5 7 6 7 6 7" << std::endl
         << "И введите название файла" << std::endl;
     std::string PATH;
-    //std::cin >> PATH;
-    PATH = "students.txt";
+    std::cin >> PATH;
     const std::string OUT_PATH = "out.txt";
     std::ofstream out;
     out.open(OUT_PATH, std::ios::out);
@@ -57,7 +45,7 @@ void test()
     if (students.getArrayLen() == 0)
     {
         std::cout << "Не введено ни одного студента" << std::endl;
-        return;
+        return -1;
     }
 
     // Пункт 5
@@ -104,6 +92,8 @@ void test()
     Table codes(headers, info, nColumns, columnsLen, specsCodes.getArrayLen());
     codes.printTable(out);
     out.close();
+
+    return 0;
 }
 
 void specsToMatrix(MyVector<MyVector<MyVector<char>>>& specsCodes, char***& info)
@@ -137,6 +127,7 @@ void studentsToMatrix(MyVector<Student>& students, char***& studInfo)
     studInfo = new char** [students.getArrayLen()];
     std::string& tempStudString = students[0].getName();
     int tempStudInt;
+    char* tempCString = new char[1];
 
     for (int i = 0; i < students.getArrayLen(); i++)
     {
@@ -153,6 +144,17 @@ void studentsToMatrix(MyVector<Student>& students, char***& studInfo)
         tempStudString = students[i].getGroupNumber();
         studInfo[i][2] = new char[tempStudString.length() + 1];
         strToCString(tempStudString, studInfo[i][2]);
+
+        /*tempStudInt = students[i].getSemester();
+        intToCStr(tempStudInt, tempCString);
+        studInfo[i][3] = new char[strlen(tempCString) + 1];
+        strcpy(studInfo[i][3], tempCString);
+
+        tempStudInt = students[i].getSumPerformance();
+        delete[] tempCString;
+        intToCStr(tempStudInt, tempCString);
+        studInfo[i][4] = new char[strlen(tempCString) + 1];
+        strcpy(studInfo[i][4], tempCString);*/
 
         tempStudInt = students[i].getSemester();
         studInfo[i][3] = new char[intLen(tempStudInt) + 1];

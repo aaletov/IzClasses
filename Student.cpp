@@ -8,6 +8,10 @@ Student::Student()
 {
 	semester = 1;
 	performance = new int[5];
+	for (int i = 0; i < 5; i++)
+	{
+		performance[i] = NULL;
+	}
 }
 
 int Student::getSemester()
@@ -51,7 +55,10 @@ Student::Student(const Student& student)
 
 Student::~Student()
 {
-	delete[] performance;
+	if (performance != nullptr)
+	{
+		delete[] performance;
+	}
 }
 
 int Student::getSumPerformance()

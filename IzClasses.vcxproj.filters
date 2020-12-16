@@ -21,9 +21,6 @@
     <ClCompile Include="Student.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="MyVector.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Open.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>

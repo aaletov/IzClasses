@@ -1,7 +1,7 @@
 #include "Table.h"
 #include "TableRow.h"
 
-Table::Table(char** headers, char*** info, int nColumns, int* columnsLen, int nRows)
+Table::Table(char**& headers, char***& info, int nColumns, int*& columnsLen, int nRows)
 {
 	this->nRows = nRows;
 	TableRow tempRow(headers, nColumns, columnsLen);
@@ -46,10 +46,10 @@ void Table::printBorder(std::ostream& out)
 	out << std::endl;
 }
 
-Table::~Table() {
-	/*for (int i = 0; i < nRows; i++)
+Table::~Table() 
+{
+	if (tableRows != nullptr)
 	{
-		tableRows[i].~TableRow();
-	}*/
-	delete[] tableRows;
+		delete[] tableRows;
+	}
 }

@@ -141,7 +141,6 @@
   <ItemGroup>
     <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="IzClasses.cpp" />
-    <ClCompile Include="MyVector.cpp" />
     <ClCompile Include="Open.cpp" />
     <ClCompile Include="Check.cpp" />
     <ClCompile Include="Student.cpp" />

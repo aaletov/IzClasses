@@ -9,7 +9,7 @@ TableRow::TableRow()
 	columnsLen = new int[1];
 }
 
-TableRow::TableRow(char** info, int nColumns, int* columnsLen)
+TableRow::TableRow(char**& info, int nColumns, int*& columnsLen)
 {
 	this->info = new char* [nColumns];
 	for (int i = 0; i < nColumns; i++)
@@ -109,12 +109,14 @@ void TableRow::printEmptyCellString(std::ostream& out, int column)
 
 TableRow::~TableRow()
 {
-	if (columnsLen != nullptr && info != nullptr && info[nColumns - 1] != nullptr)
+	if (info != nullptr) 
 	{
-		delete[] columnsLen;
 		for (int i = 0; i < nColumns; i++)
 		{
-			delete[] info[i];
+			if (info[i] != nullptr)
+			{
+				delete[] info[i];
+			}
 		}
 		delete[] info;
 	}

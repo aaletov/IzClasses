@@ -10,7 +10,7 @@ private:
 	int nRows;
 	void printBorder(std::ostream& out);
 public:
-	Table(char** headers, char*** info, int nColumns, int* columnsLen, int nRows);
+	Table(char**& headers, char***& info, int nColumns, int*& columnsLen, int nRows);
 	void printTable(std::ostream& out);
 	~Table();
 };

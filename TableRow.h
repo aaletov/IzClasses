@@ -11,9 +11,9 @@ private:
 	void printEmptyCellString(std::ostream& out, int column);
 public:
 	TableRow& operator=(TableRow& rvalue);
-	~TableRow();
 	TableRow();
-	TableRow(char** info, int nColumns, int* columnsLen);
+	~TableRow();
+	TableRow(char**& info, int nColumns, int*& columnsLen);
 	TableRow(const TableRow& drob);
 	void printRow(std::ostream& out);
 };

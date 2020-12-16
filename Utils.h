@@ -2,6 +2,7 @@
 #include <string>
 
 char* intToCStr(int x);
+void intToCStr(int x, char*& str);
 int cStrToInt(char* cstr);
 int intLen(int number);
 char digToCStr(int x);
@@ -42,6 +43,21 @@ char* intToCStr(int x)
         x /= 10;
     }
     return cInt;
+}
+
+void intToCStr(int x, char*& str)
+{
+    int len = intLen(x);
+    str = new char[len + 1];
+    int dig;
+
+    for (int i = 0; i < len; i++)
+    {
+        dig = x % 10;
+        str[len - 1 - i] = static_cast<char>(digToCStr(dig));
+        x /= 10;
+    }
+    str[len] = 0;
 }
 
 char digToCStr(int x)

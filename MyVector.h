@@ -41,16 +41,19 @@ public:
 	}
 	~MyVector()
 	{
-		try
-		{
-			for (int i = 0; i < arrayLen; i++)
+		if (array != nullptr)
+		{	
+			try
 			{
-				array[i].~T();
+				for (int i = 0; i < arraySize; i++)
+				{
+					array[i].~T();
+				}
 			}
-		}
-		catch (const std::exception&)
-		{
-			delete[] array;
+			catch (...)
+			{
+
+			}
 		}
 	}
 	bool operator==(MyVector<T>& rvalue)
@@ -136,44 +139,3 @@ public:
 	}
 };
 
-//template<class T>
-//class MyVectorPoly
-//{
-//private:
-//	MyVector<T> vectors;
-//public:
-//	MyVectorPoly()
-//	{
-//	}
-//	MyVectorPoly(int* lengths, int dimensions)
-//	{
-//		if (dimensions == 1)
-//		{
-//			for (int i = 0; i < lengths[0]; i++)
-//			{
-//				this->push_back(NULL);
-//			}
-//		}
-//
-//		int* copyLengths;
-//		copyDynamic(lengths, copyLengths, dimensions);
-//
-//		for (int i = 0; i < lengths[0]; i++)
-//		{
-//			this->push_back(MyVector<T>(++copyLengths, dimensions - 1));
-//		}
-//
-//		delete[] copyLengths;
-//	}
-//	bool contains(MyVector<T> elem)
-//	{
-//		for (int i = 0; i < arrayLen; i++)
-//		{
-//			if (array[i] == elem)
-//			{
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//}
